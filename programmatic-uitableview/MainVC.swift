@@ -1,5 +1,5 @@
 //
-//  VideoListVC.swift
+//  MainVC.swift
 //  programmatic-uitableview
 //
 //  Created by RuslanS on 11/19/22.
@@ -8,9 +8,9 @@
 import UIKit
 import SwiftyJSON
 
-class VideoListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
+    let addButton = UIButton()
     var tableView = UITableView()
     var settings: [Settings] = []
     private var refreshControl = UIRefreshControl()
@@ -33,7 +33,7 @@ class VideoListVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
        // Code to refresh table view
         print("pull to refresh")
         
-        let token = Constants.token
+        let token = Constants.token //uses token from Constants file
         let urlString = "https://bday-368509.wl.r.appspot.com/dates?token=\(token)"
         
         
@@ -61,23 +61,35 @@ class VideoListVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     func configureTableView() {
         view.addSubview(tableView)
+        view.addSubview(addButton)
         
-        //Adds refresh control
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.setTitle("Add", for: .normal)
+        addButton.titleLabel?.font = .systemFont(ofSize: 32, weight: .bold)
+        addButton.backgroundColor = .orange
+        addButton.layer.backgroundColor = CGColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0)
+        addButton.layer.cornerRadius = 15
+        addButton.layer.cornerCurve = .continuous
+        addButton.layer.borderWidth = 3
+        addButton.layer.borderColor = CGColor(red: 255.0/255.0, green: 115.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.refreshControl = refreshControl
-        
         setTableViewDelegates()
-        //cell row height
-        tableView.rowHeight = 80
+        tableView.rowHeight = 60
         //register cells
         tableView.register(SettingsCell.self, forCellReuseIdentifier: "settingsCell")
-        //set constraints
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            addButton.widthAnchor.constraint(equalToConstant: 150),
+            addButton.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
     
@@ -101,6 +113,16 @@ class VideoListVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         cell.set(settings: setting)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            settings.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+//            settings.append(Settings(image: UIImage(systemName: "sun.max.fill")!, date: "0.9.21", body: "body"))
+        }
     }
     
     @objc func switchChanged(_ sender : UISwitch!){

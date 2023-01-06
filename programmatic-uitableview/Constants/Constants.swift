@@ -8,5 +8,5 @@
 import Foundation
 
 struct Constants {
-    static var token = "TOKEN"
+    static var token = ""
 }

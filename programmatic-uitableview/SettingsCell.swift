@@ -58,8 +58,8 @@ class SettingsCell: UITableViewCell {
         NSLayoutConstraint.activate([
             cellImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             cellImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            cellImageView.heightAnchor.constraint(equalToConstant: 60),
-            cellImageView.widthAnchor.constraint(equalToConstant: 60),
+            cellImageView.heightAnchor.constraint(equalToConstant: 40),
+            cellImageView.widthAnchor.constraint(equalToConstant: 40),
             
             cellDateLabel.topAnchor.constraint(equalTo: topAnchor),
             cellDateLabel.leadingAnchor.constraint(equalTo: cellImageView.trailingAnchor, constant: 20),
@@ -71,7 +71,7 @@ class SettingsCell: UITableViewCell {
     }
 }
 
-extension VideoListVC {
+extension MainVC {
     
     func makeSettingsCells() -> [Settings] {
         
